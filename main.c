@@ -1,6 +1,7 @@
 #include "msp.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <math.h>
 
 volatile long *adc14_control_register_0 = (volatile long *) 0x40012000; // ADCTL0
 volatile long *adc14_control_register_1 = (volatile long *) 0x40012004; // ADCTL1
@@ -32,6 +33,7 @@ int count2 = 0;
 float voltage[10], percent[10];
 int Nx2[100][2];
 uint32_t numAdc = 0;
+uint32_t IRTable[10] = {15968, 14378, 13544, 12842, 11580, 11186, 10999, 10872, 10662, 10356};
 
 /**
  * main.c
@@ -76,6 +78,8 @@ void main(void)
 
         while(ADC14CTL0 & BIT(16)){}
         numAdc = ADC14MEM0;
+        float ActVal = 69.6 - ((6.88*pow(10,-3))*numAdc) + ((1.99*pow(10,-7))*pow(numAdc,2));
+        printf("%f\n", ActVal);
     }
 }
 
